@@ -32,6 +32,7 @@ const TodoWrapper = () => {
 
 
   const handleDelete = (id) => {
+    //remove the todo with id === id passed in
     setTodos(todos.filter(todos => todos.id !== id))
   }
 
