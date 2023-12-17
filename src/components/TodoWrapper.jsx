@@ -2,7 +2,7 @@ import { useState } from "react";
 import TodoForm from "./TodoForm";
 import Todo from "./Todo";
 import { v4 as uuidv4 } from "uuid";
-import { faRub } from "@fortawesome/free-solid-svg-icons";
+// import { faRub } from "@fortawesome/free-solid-svg-icons";
 uuidv4();
 
 const TodoWrapper = () => {
@@ -23,20 +23,23 @@ const TodoWrapper = () => {
   };
 
   const toggleComplete = (id) => {
+    // find id of the clicked item and update its 'completed' value to true or false
     setTodos(
-      todos.map((todo =>
+      todos.map((todo) =>
         todo.id === id ? { ...todo, completed: !todo.completed } : todo
-       ) )
+      )
     );
   };
 
-
   const handleDelete = (id) => {
     //remove the todo with id === id passed in
-    setTodos(todos.filter(todos => todos.id !== id))
+    setTodos(todos.filter((todos) => todos.id !== id));
+  };
+
+
+  const handleEdit = (id) => {
+    setTodos
   }
-
-
 
   return (
     <div className="TodoWrapper">
@@ -44,7 +47,13 @@ const TodoWrapper = () => {
 
       <TodoForm addTodo={addTodos} />
       {todos.map((todo, index) => (
-        <Todo task={todo} key={index} toggleComplete={toggleComplete} deleteTask={handleDelete} />
+        <Todo
+          task={todo}
+          key={index}
+          toggleComplete={toggleComplete}
+          deleteTask={handleDelete}
+          editTask={handleEdit}
+        />
       ))}
     </div>
   );
