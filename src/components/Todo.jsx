@@ -16,7 +16,6 @@ const Todo = ({task, toggleComplete, deleteTask, editTask}) => {
      <div>
       <FontAwesomeIcon icon={faPenToSquare} onClick={() => editTask(task.id)}/>
       <FontAwesomeIcon icon={faTrash} onClick={() => deleteTask(task.id)} />
-
      </div>
     </div>
   )

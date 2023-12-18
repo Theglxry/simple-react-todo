@@ -1,12 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TodoForm from "./TodoForm";
 import Todo from "./Todo";
+import EditForm from "./EditForm";
 import { v4 as uuidv4 } from "uuid";
 // import { faRub } from "@fortawesome/free-solid-svg-icons";
 uuidv4();
 
 const TodoWrapper = () => {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(
+    JSON.parse(localStorage.getItem("todos")) || []
+  );
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
 
   const addTodos = (todo) => {
     setTodos([
@@ -36,28 +43,40 @@ const TodoWrapper = () => {
     setTodos(todos.filter((todos) => todos.id !== id));
   };
 
-
   const handleEdit = (id) => {
-    setTodos(todos.map((todo) =>
-    todo.id === id ? {...todo, isEditing: !todo.isEditing} : todo 
-    )
-    )
-  }
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, isEditing: !todo.isEditing } : todo
+      )
+    );
+  };
+
+  const editTask = (task, id) => {
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, task, isEditing: !todo.isEditing } : todo
+      )
+    );
+  };
 
   return (
     <div className="TodoWrapper">
       <h1>Get stuff done!!</h1>
 
       <TodoForm addTodo={addTodos} />
-      {todos.map((todo, index) => (
-        <Todo
-          task={todo}
-          key={index}
-          toggleComplete={toggleComplete}
-          deleteTask={handleDelete}
-          editTask={handleEdit}
-        />
-      ))}
+      {todos.map((todo, index) =>
+        todo.isEditing ? (
+          <EditForm editTodo={editTask} task={todo} key={index} />
+        ) : (
+          <Todo
+            task={todo}
+            key={index}
+            toggleComplete={toggleComplete}
+            deleteTask={handleDelete}
+            editTask={handleEdit}
+          />
+        )
+      )}
     </div>
   );
 };
